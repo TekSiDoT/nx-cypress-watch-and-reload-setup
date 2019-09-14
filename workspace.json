@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "projects": {
+    "cypress-repro": {
+      "root": "apps/cypress-repro",
+      "sourceRoot": "apps/cypress-repro/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/web:build",
+          "options": {
+            "outputPath": "dist/apps/cypress-repro",
+            "index": "apps/cypress-repro/src/index.html",
+            "main": "apps/cypress-repro/src/main.ts",
+            "polyfills": "apps/cypress-repro/src/polyfills.ts",
+            "tsConfig": "apps/cypress-repro/tsconfig.app.json",
+            "assets": [
+              "apps/cypress-repro/src/favicon.ico",
+              "apps/cypress-repro/src/assets"
+            ],
+            "styles": ["apps/cypress-repro/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/cypress-repro/src/environments/environment.ts",
+                  "with": "apps/cypress-repro/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "cypress-repro:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "cypress-repro:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/cypress-repro/.eslintrc",
+            "tsConfig": [
+              "apps/cypress-repro/tsconfig.app.json",
+              "apps/cypress-repro/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/cypress-repro/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/cypress-repro/jest.config.js",
+            "tsConfig": "apps/cypress-repro/tsconfig.spec.json",
+            "setupFile": "apps/cypress-repro/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "cypress-repro-e2e": {
+      "root": "apps/cypress-repro-e2e",
+      "sourceRoot": "apps/cypress-repro-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/cypress-repro-e2e/cypress.json",
+            "tsConfig": "apps/cypress-repro-e2e/tsconfig.e2e.json",
+            "devServerTarget": "cypress-repro:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "cypress-repro:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/cypress-repro-e2e/.eslintrc",
+            "tsConfig": ["apps/cypress-repro-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/cypress-repro-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/web"
+  },
+  "schematics": {
+    "@nrwl/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/cypress": {
+      "cypress-project": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/react": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/web": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/node": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/nest": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/express": {
+      "application": {
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "cypress-repro"
+}
