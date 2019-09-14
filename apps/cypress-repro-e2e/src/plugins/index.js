@@ -12,6 +12,8 @@
 // the project's config changing)
 
 const { preprocessTypescript } = require('@nrwl/cypress/plugins/preprocessor');
+require('cypress-watch-and-reload/plugins')
+
 
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
